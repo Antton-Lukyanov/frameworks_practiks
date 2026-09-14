@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "student_id": 1,
+    "task_id": 1,
+    "file_name": "report.pdf",
+    "file_size_mb": 6.7,
+    "score": 87,
+    "submission_date": "2026-08-23"
+  }
+]
