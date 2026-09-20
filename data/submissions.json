@@ -6,6 +6,7 @@
     "file_name": "report.pdf",
     "file_size_mb": 6.7,
     "score": 87,
-    "submission_date": "2026-08-23"
+    "submission_date": "2026-08-23",
+    "is_cancelled": false
   }
 ]

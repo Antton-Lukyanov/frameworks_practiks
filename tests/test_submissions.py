@@ -1,6 +1,9 @@
-"""Тесты функций работы со сдачами."""
+"""Тесты класса Submission и функций работы со сдачами."""
 
-from submissions import (
+from models.students import Student
+from models.tasks import Task
+from models.submissions import (
+    Submission,
     is_task_submitted,
     create_submission,
     cancel_submission,
@@ -10,22 +13,49 @@ from submissions import (
 )
 
 
+def _make_student() -> Student:
+    return Student(1, "Васильчук Егор", "ЭФБО-02-24")
+
+
+def _make_task() -> Task:
+    return Task(1, "Практическая работа №1", 100, "2026-09-15")
+
+
+def test_submission_creation():
+    student = _make_student()
+    task = _make_task()
+    submission = Submission(1, student, task, "report.pdf", 5.0)
+    assert submission.id == 1
+    assert submission.student is student
+    assert submission.task is task
+    assert submission.file_name == "report.pdf"
+    assert not submission.is_cancelled
+
+
+def test_submission_cancel():
+    submission = Submission(1, _make_student(), _make_task(), "report.pdf", 5.0)
+    submission.cancel()
+    assert submission.is_cancelled
+
+
 def test_is_task_submitted_false():
     submissions = []
-    assert not is_task_submitted(submissions, 1, 1)
+    assert not is_task_submitted(submissions, _make_student(), _make_task())
 
 
 def test_duplicate_submission_forbidden():
     submissions = []
-    create_submission(submissions, 1, 1, "report.pdf", 5.0)
-    assert is_task_submitted(submissions, 1, 1)
-    second = create_submission(submissions, 1, 1, "report2.pdf", 3.0)
+    student = _make_student()
+    task = _make_task()
+    create_submission(submissions, student, task, "report.pdf", 5.0)
+    assert is_task_submitted(submissions, student, task)
+    second = create_submission(submissions, student, task, "report2.pdf", 3.0)
     assert second is None
 
 
 def test_cancel_submission():
     submissions = []
-    create_submission(submissions, 1, 1, "report.pdf", 5.0)
+    create_submission(submissions, _make_student(), _make_task(), "report.pdf", 5.0)
     assert cancel_submission(submissions, 1)
     assert not cancel_submission(submissions, 99)
 
@@ -43,8 +73,8 @@ def test_check_file_size():
 
 def test_get_statistics():
     submissions = []
-    create_submission(submissions, 1, 1, "a.pdf", 5.0)
-    submissions[0]["score"] = 80
+    create_submission(submissions, _make_student(), _make_task(), "a.pdf", 5.0)
+    submissions[0].score = 80
     stats = get_statistics(submissions)
     assert stats["total"] == 1
     assert stats["submitted"] == 1

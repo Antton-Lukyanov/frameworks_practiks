@@ -1,48 +1,23 @@
 """Точка запуска приложения «Сервис сдачи заданий»."""
 
+from __future__ import annotations
+
 from storage import (
     load_students, save_students,
     load_tasks, save_tasks,
     load_submissions, save_submissions,
 )
-from students import add_student, find_student
-from tasks import add_task, find_task
-from submissions import (
-    create_submission, cancel_submission, get_statistics,
+from models.students import (
+    Student, add_student, find_student, get_student_by_id, show_students,
+)
+from models.tasks import (
+    Task, add_task, find_task, get_task_by_id, show_tasks,
+)
+from models.submissions import (
+    Submission, create_submission, cancel_submission,
+    get_statistics, show_submissions,
 )
 from utils import input_int, input_str, input_float
-
-
-def show_students(students: list[dict]) -> None:
-    """Вывести список студентов."""
-    if not students:
-        print("Список студентов пуст.")
-        return
-    print("\n--- Студенты ---")
-    for s in students:
-        print(f"[{s['id']}] {s['name']} (группа {s['group']})")
-
-
-def show_tasks(tasks: list[dict]) -> None:
-    """Вывести список заданий."""
-    if not tasks:
-        print("Список заданий пуст.")
-        return
-    print("\n--- Задания ---")
-    for t in tasks:
-        print(f"[{t['id']}] {t['title']} (макс. {t['max_score']} б., до {t['deadline']})")
-
-
-def show_submissions(submissions: list[dict]) -> None:
-    """Вывести список сдач."""
-    if not submissions:
-        print("Список сдач пуст.")
-        return
-    print("\n--- Сдачи ---")
-    for s in submissions:
-        print(f"[{s['id']}] студент {s['student_id']}, задание {s['task_id']}, "
-              f"файл {s['file_name']} ({s['file_size_mb']} МБ), "
-              f"балл {s['score']}, дата {s['submission_date']}")
 
 
 def menu() -> None:
@@ -61,11 +36,39 @@ def menu() -> None:
     print("0. Выход")
 
 
+def create_new_submission(
+    submissions: list[Submission],
+    students: list[Student],
+    tasks: list[Task],
+) -> None:
+    """Сценарий сдачи задания: поиск студента и задания, создание объекта Submission."""
+    student_id = input_int("ID студента: ")
+    student = get_student_by_id(students, student_id)
+    if student is None:
+        print("Студент с таким ID не найден.")
+        return
+
+    task_id = input_int("ID задания: ")
+    task = get_task_by_id(tasks, task_id)
+    if task is None:
+        print("Задание с таким ID не найдено.")
+        return
+
+    file_name = input_str("Имя файла: ")
+    file_size_mb = input_float("Размер файла (МБ): ")
+
+    submission = create_submission(submissions, student, task, file_name, file_size_mb)
+    if submission is None:
+        print("Задание уже сдано этим студентом.")
+    else:
+        print(f"Сдача зафиксирована. ID = {submission.id}")
+
+
 def main() -> None:
     """Точка запуска: цикл меню и вызов функций проекта."""
     students = load_students("data/students.json")
     tasks = load_tasks("data/tasks.json")
-    submissions = load_submissions("data/submissions.json")
+    submissions = load_submissions("data/submissions.json", students, tasks)
 
     while True:
         menu()
@@ -97,18 +100,8 @@ def main() -> None:
         elif choice == 7:
             show_submissions(submissions)
         elif choice == 8:
-            student_id = input_int("ID студента: ")
-            task_id = input_int("ID задания: ")
-            file_name = input_str("Имя файла: ")
-            file_size_mb = input_float("Размер файла (МБ): ")
-            result = create_submission(
-                submissions, student_id, task_id, file_name, file_size_mb
-            )
-            if result is None:
-                print("Задание уже сдано этим студентом.")
-            else:
-                save_submissions("data/submissions.json", submissions)
-                print("Сдача зафиксирована.")
+            create_new_submission(submissions, students, tasks)
+            save_submissions("data/submissions.json", submissions)
         elif choice == 9:
             submission_id = input_int("ID сдачи: ")
             if cancel_submission(submissions, submission_id):
