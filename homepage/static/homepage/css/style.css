@@ -1,0 +1,136 @@
+:root {
+    --ink: #172438;
+    --muted: #66758a;
+    --accent: #4268f5;
+    --surface: #ffffff;
+    --page: #f4f7fc;
+}
+
+body {
+    min-height: 100vh;
+    color: var(--ink);
+    background: var(--page);
+}
+
+.site-navbar {
+    background: #172438;
+    box-shadow: 0 5px 22px rgb(23 36 56 / 12%);
+}
+
+.navbar-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.hero-panel,
+.entity-card,
+.entity-detail,
+.empty-state {
+    border: 1px solid #e7ecf4;
+    border-radius: 1.25rem;
+    background: var(--surface);
+    box-shadow: 0 12px 32px rgb(23 36 56 / 5%);
+}
+
+.hero-panel {
+    padding: clamp(2rem, 6vw, 5rem);
+    background: linear-gradient(135deg, #fff 25%, #eaf0ff 100%);
+}
+
+.hero-panel h1 {
+    max-width: 15ch;
+    margin-bottom: 1rem;
+}
+
+.hero-panel .lead {
+    max-width: 58ch;
+    color: var(--muted);
+}
+
+.section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.section-heading h1,
+.entity-detail h1,
+.empty-state h1 {
+    margin-bottom: 0;
+    font-weight: 700;
+}
+
+.eyebrow {
+    margin-bottom: 0.4rem;
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.count-pill,
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.count-pill {
+    color: #34435c;
+    background: #e9eef7;
+}
+
+.status-active {
+    color: #176a43;
+    background: #dff5e9;
+}
+
+.status-cancelled {
+    color: #7a5360;
+    background: #f6e8ec;
+}
+
+.entity-card {
+    transition: transform 160ms ease, box-shadow 160ms ease;
+}
+
+.entity-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 16px 36px rgb(23 36 56 / 10%);
+}
+
+.entity-card p:last-of-type {
+    color: var(--muted);
+}
+
+.entity-detail .card-body {
+    padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.empty-state {
+    padding: clamp(2rem, 5vw, 4rem);
+}
+
+.site-footer {
+    margin-top: 2rem;
+    color: var(--muted);
+    border-top: 1px solid #e7ecf4;
+}
+
+@media (max-width: 575.98px) {
+    .navbar-nav {
+        margin-top: 0.75rem;
+    }
+
+    .section-heading {
+        align-items: start;
+        flex-direction: column;
+    }
+}

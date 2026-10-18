@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Сдачи · Сервис заданий{% endblock %}
+
+{% block content %}
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Работы студентов</p>
+            <h1>Сдачи заданий</h1>
+        </div>
+        <span class="count-pill">{{ submissions|length }} всего</span>
+    </div>
+    <div class="row g-3">
+        {% for submission in submissions %}
+            {% include "submissions/includes/submission_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <p class="empty-state">Сдач пока нет.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

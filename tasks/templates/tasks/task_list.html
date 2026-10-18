@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Задания · Сервис заданий{% endblock %}
+
+{% block content %}
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Учебный план</p>
+            <h1>Задания</h1>
+        </div>
+        <span class="count-pill">{{ tasks|length }} всего</span>
+    </div>
+    <div class="row g-3">
+        {% for task in tasks %}
+            {% include "tasks/includes/task_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <p class="empty-state">Заданий пока нет.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

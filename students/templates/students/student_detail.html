@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if student %}{{ student.name }}{% else %}Студент не найден{% endif %}
+    · Сервис заданий
+{% endblock %}
+
+{% block content %}
+    {% if student %}
+        <article class="card entity-detail">
+            <div class="card-body">
+                <p class="eyebrow">Студент №{{ student.id }}</p>
+                <h1>{{ student.name|default:"Имя не указано" }}</h1>
+                <p><strong>Группа:</strong> {{ student.group|default:"—" }}</p>
+            </div>
+        </article>
+    {% else %}
+        <section class="empty-state">
+            <p class="eyebrow">Ошибка 404</p>
+            <h1>Студент не найден</h1>
+            <p>Студента с таким идентификатором нет в списке.</p>
+        </section>
+    {% endif %}
+    <a class="btn btn-outline-secondary mt-3"
+       href="{% url 'students:list' %}">← К списку студентов</a>
+{% endblock %}

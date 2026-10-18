@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Студенты · Сервис заданий{% endblock %}
+
+{% block content %}
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">Участники</p>
+            <h1>Студенты</h1>
+        </div>
+        <span class="count-pill">{{ students|length }} всего</span>
+    </div>
+    <div class="row g-3">
+        {% for student in students %}
+            {% include "students/includes/student_card.html" %}
+        {% empty %}
+            <div class="col-12">
+                <p class="empty-state">Студентов пока нет.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

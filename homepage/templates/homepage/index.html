@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Главная · Сервис сдачи заданий{% endblock %}
+
+{% block content %}
+    <section class="hero-panel">
+        <p class="eyebrow">Учебный проект · ПР6</p>
+        <h1 class="display-5 fw-bold">Сервис сдачи заданий</h1>
+        <p class="lead">
+            Просматривайте студентов, учебные задания и результаты сдачи
+            в одном месте.
+        </p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            <a class="btn btn-primary btn-lg"
+               href="{% url 'students:list' %}">Студенты</a>
+            <a class="btn btn-outline-primary btn-lg"
+               href="{% url 'tasks:list' %}">Задания</a>
+            <a class="btn btn-outline-primary btn-lg"
+               href="{% url 'submissions:list' %}">Сдачи</a>
+        </div>
+    </section>
+    <p class="text-muted mt-4">
+        Веб-интерфейс использует существующие объекты и JSON-файлы проекта.
+    </p>
+{% endblock %}

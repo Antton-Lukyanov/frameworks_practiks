@@ -1,0 +1,11 @@
+<div class="col-md-6 col-lg-4">
+    <article class="card entity-card h-100">
+        <div class="card-body">
+            <p class="eyebrow">Студент №{{ student.id }}</p>
+            <h2 class="h5">{{ student.name|default:"Имя не указано" }}</h2>
+            <p class="text-muted">Группа: {{ student.group|default:"—" }}</p>
+            <a class="btn btn-sm btn-outline-primary"
+               href="{% url 'students:detail' student.id %}">Подробнее</a>
+        </div>
+    </article>
+</div>

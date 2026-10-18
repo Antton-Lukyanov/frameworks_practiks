@@ -1,0 +1,11 @@
+<div class="col-md-6 col-lg-4">
+    <article class="card entity-card h-100">
+        <div class="card-body">
+            <p class="eyebrow">Задание №{{ task.id }}</p>
+            <h2 class="h5">{{ task.title|default:"Без названия" }}</h2>
+            <p class="text-muted">Максимум: {{ task.max_score }} баллов</p>
+            <a class="btn btn-sm btn-outline-primary"
+               href="{% url 'tasks:detail' task.id %}">Подробнее</a>
+        </div>
+    </article>
+</div>

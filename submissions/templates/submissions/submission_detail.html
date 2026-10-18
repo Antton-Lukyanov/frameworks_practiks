@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if submission %}Сдача №{{ submission.id }}{% else %}Сдача не найдена{% endif %}
+    · Сервис заданий
+{% endblock %}
+
+{% block content %}
+    {% if submission %}
+        <article class="card entity-detail">
+            <div class="card-body">
+                <p class="eyebrow">Работа студента</p>
+                <h1>Сдача №{{ submission.id }}</h1>
+                <p><strong>Студент:</strong>
+                    {{ submission.student.name|default:"Не указан" }}</p>
+                <p><strong>Задание:</strong>
+                    {{ submission.task.title|default:"Без названия" }}</p>
+                <p><strong>Файл:</strong> {{ submission.file_name|default:"—" }}
+                    ({{ submission.file_size_mb }} МБ)</p>
+                <p><strong>Дата:</strong>
+                    {{ submission.submission_date|default:"Не указана" }}</p>
+                <p><strong>Результат:</strong> {{ submission.get_result }}
+                    ({{ submission.score }} баллов)</p>
+                <p><strong>Статус:</strong>
+                    {% include "submissions/includes/submission_status.html" %}
+                </p>
+            </div>
+        </article>
+    {% else %}
+        <section class="empty-state">
+            <p class="eyebrow">Ошибка 404</p>
+            <h1>Сдача не найдена</h1>
+            <p>Сдачи с таким идентификатором нет в списке.</p>
+        </section>
+    {% endif %}
+    <a class="btn btn-outline-secondary mt-3"
+       href="{% url 'submissions:list' %}">← К списку сдач</a>
+{% endblock %}

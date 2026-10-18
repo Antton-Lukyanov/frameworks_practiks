@@ -1,0 +1,16 @@
+<div class="col-md-6 col-lg-4">
+    <article class="card entity-card h-100">
+        <div class="card-body">
+            <p class="eyebrow">Сдача №{{ submission.id }}</p>
+            <h2 class="h5">
+                {{ submission.task.title|default:"Без названия" }}
+            </h2>
+            <p>Студент: {{ submission.student.name|default:"Не указан" }}</p>
+            {% include "submissions/includes/submission_status.html" %}
+            <a class="btn btn-sm btn-outline-primary d-block mt-3"
+               href="{% url 'submissions:detail' submission.id %}">
+                Подробнее
+            </a>
+        </div>
+    </article>
+</div>
