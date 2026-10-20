@@ -1,8 +1,8 @@
-"""Класс Submission и функции работы с коллекцией сдач.
+﻿"""РљР»Р°СЃСЃ Submission Рё С„СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ СЃРґР°С‡.
 
-Функции get_task_status(), check_file_size() и get_result()
-перенесены из ПР1/ПР2 и остаются обычными функциями:
-они не относятся к состоянию конкретного объекта.
+Р¤СѓРЅРєС†РёРё get_task_status(), check_file_size() Рё get_result()
+РїРµСЂРµРЅРµСЃРµРЅС‹ РёР· РџР 1/РџР 2 Рё РѕСЃС‚Р°СЋС‚СЃСЏ РѕР±С‹С‡РЅС‹РјРё С„СѓРЅРєС†РёСЏРјРё:
+РѕРЅРё РЅРµ РѕС‚РЅРѕСЃСЏС‚СЃСЏ Рє СЃРѕСЃС‚РѕСЏРЅРёСЋ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РѕР±СЉРµРєС‚Р°.
 """
 
 from __future__ import annotations
@@ -14,7 +14,7 @@ from .tasks import Task
 
 
 class Submission:
-    """Факт сдачи задания студентом."""
+    """Р¤Р°РєС‚ СЃРґР°С‡Рё Р·Р°РґР°РЅРёСЏ СЃС‚СѓРґРµРЅС‚РѕРј."""
 
     def __init__(
         self,
@@ -26,7 +26,7 @@ class Submission:
         score: int = 0,
         submission_date: str | None = None,
     ) -> None:
-        """Создать объект сдачи."""
+        """РЎРѕР·РґР°С‚СЊ РѕР±СЉРµРєС‚ СЃРґР°С‡Рё."""
         self.id = submission_id
         self.student = student
         self.task = task
@@ -37,24 +37,24 @@ class Submission:
         self.is_cancelled = False
 
     def __str__(self) -> str:
-        """Вернуть строковое представление сдачи."""
-        status = "отменена" if self.is_cancelled else "активна"
+        """Р’РµСЂРЅСѓС‚СЊ СЃС‚СЂРѕРєРѕРІРѕРµ РїСЂРµРґСЃС‚Р°РІР»РµРЅРёРµ СЃРґР°С‡Рё."""
+        status = "РѕС‚РјРµРЅРµРЅР°" if self.is_cancelled else "Р°РєС‚РёРІРЅР°"
         return (
-            f"[{self.id}] {self.student.name} → {self.task.title}, "
-            f"файл {self.file_name} ({self.file_size_mb} МБ), "
-            f"балл {self.score}, дата {self.submission_date}, {status}"
+            f"[{self.id}] {self.student.name} в†’ {self.task.title}, "
+            f"С„Р°Р№Р» {self.file_name} ({self.file_size_mb} РњР‘), "
+            f"Р±Р°Р»Р» {self.score}, РґР°С‚Р° {self.submission_date}, {status}"
         )
 
     def cancel(self) -> None:
-        """Отменить сдачу, изменив её состояние."""
+        """РћС‚РјРµРЅРёС‚СЊ СЃРґР°С‡Сѓ, РёР·РјРµРЅРёРІ РµС‘ СЃРѕСЃС‚РѕСЏРЅРёРµ."""
         self.is_cancelled = True
 
     def get_result(self) -> str:
-        """Вернуть текстовый результат по баллам."""
+        """Р’РµСЂРЅСѓС‚СЊ С‚РµРєСЃС‚РѕРІС‹Р№ СЂРµР·СѓР»СЊС‚Р°С‚ РїРѕ Р±Р°Р»Р»Р°Рј."""
         return get_result(self.score)
 
     def to_data(self) -> dict:
-        """Преобразовать объект в словарь для сохранения в JSON."""
+        """РџСЂРµРѕР±СЂР°Р·РѕРІР°С‚СЊ РѕР±СЉРµРєС‚ РІ СЃР»РѕРІР°СЂСЊ РґР»СЏ СЃРѕС…СЂР°РЅРµРЅРёСЏ РІ JSON."""
         return {
             "id": self.id,
             "student_id": self.student.id,
@@ -73,7 +73,7 @@ class Submission:
         students: list[Student],
         tasks: list[Task],
     ) -> "Submission | None":
-        """Создать сдачу из словаря, найдя связанные объекты Student и Task."""
+        """РЎРѕР·РґР°С‚СЊ СЃРґР°С‡Сѓ РёР· СЃР»РѕРІР°СЂСЏ, РЅР°Р№РґСЏ СЃРІСЏР·Р°РЅРЅС‹Рµ РѕР±СЉРµРєС‚С‹ Student Рё Task."""
         student = next((s for s in students if s.id == data["student_id"]), None)
         task = next((t for t in tasks if t.id == data["task_id"]), None)
         if student is None or task is None:
@@ -91,36 +91,36 @@ class Submission:
         return submission
 
 
-# ---------- Функции, перенесённые из ПР1 (не методы) ----------
+# ---------- Р¤СѓРЅРєС†РёРё, РїРµСЂРµРЅРµСЃС‘РЅРЅС‹Рµ РёР· РџР 1 (РЅРµ РјРµС‚РѕРґС‹) ----------
 
 def get_task_status(is_submitted: bool) -> str:
-    """Вернуть текстовый статус сдачи задания."""
+    """Р’РµСЂРЅСѓС‚СЊ С‚РµРєСЃС‚РѕРІС‹Р№ СЃС‚Р°С‚СѓСЃ СЃРґР°С‡Рё Р·Р°РґР°РЅРёСЏ."""
     if is_submitted:
-        return "Задание сдано"
-    return "Задание не сдано"
+        return "Р—Р°РґР°РЅРёРµ СЃРґР°РЅРѕ"
+    return "Р—Р°РґР°РЅРёРµ РЅРµ СЃРґР°РЅРѕ"
 
 
 def check_file_size(file_size_mb: float) -> str:
-    """Проверить допустимый размер файла (макс. 10 МБ)."""
+    """РџСЂРѕРІРµСЂРёС‚СЊ РґРѕРїСѓСЃС‚РёРјС‹Р№ СЂР°Р·РјРµСЂ С„Р°Р№Р»Р° (РјР°РєСЃ. 10 РњР‘)."""
     if file_size_mb > 10:
-        return "Файл слишком большой (макс. 10 МБ)"
-    return "Файл допустимого размера"
+        return "Р¤Р°Р№Р» СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ (РјР°РєСЃ. 10 РњР‘)"
+    return "Р¤Р°Р№Р» РґРѕРїСѓСЃС‚РёРјРѕРіРѕ СЂР°Р·РјРµСЂР°"
 
 
 def get_result(score: int) -> str:
-    """Выставить результат по баллам."""
+    """Р’С‹СЃС‚Р°РІРёС‚СЊ СЂРµР·СѓР»СЊС‚Р°С‚ РїРѕ Р±Р°Р»Р»Р°Рј."""
     if score >= 80:
-        return "Отлично"
+        return "РћС‚Р»РёС‡РЅРѕ"
     elif score >= 60:
-        return "Хорошо"
+        return "РҐРѕСЂРѕС€Рѕ"
     else:
-        return "Требуется доработка"
+        return "РўСЂРµР±СѓРµС‚СЃСЏ РґРѕСЂР°Р±РѕС‚РєР°"
 
 
-# ---------- Функции работы с коллекцией объектов Submission ----------
+# ---------- Р¤СѓРЅРєС†РёРё СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ РѕР±СЉРµРєС‚РѕРІ Submission ----------
 
 def is_task_submitted(submissions: list[Submission], student: Student, task: Task) -> bool:
-    """Проверить, сдано ли задание студентом (учитываются только активные сдачи)."""
+    """РџСЂРѕРІРµСЂРёС‚СЊ, СЃРґР°РЅРѕ Р»Рё Р·Р°РґР°РЅРёРµ СЃС‚СѓРґРµРЅС‚РѕРј (СѓС‡РёС‚С‹РІР°СЋС‚СЃСЏ С‚РѕР»СЊРєРѕ Р°РєС‚РёРІРЅС‹Рµ СЃРґР°С‡Рё)."""
     for s in submissions:
         if s.student.id == student.id and s.task.id == task.id and not s.is_cancelled:
             return True
@@ -134,7 +134,7 @@ def create_submission(
     file_name: str,
     file_size_mb: float,
 ) -> Submission | None:
-    """Создать новую сдачу. Вернуть None, если задание уже сдано."""
+    """РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ СЃРґР°С‡Сѓ. Р’РµСЂРЅСѓС‚СЊ None, РµСЃР»Рё Р·Р°РґР°РЅРёРµ СѓР¶Рµ СЃРґР°РЅРѕ."""
     if is_task_submitted(submissions, student, task):
         return None
     submission_id = max((s.id for s in submissions), default=0) + 1
@@ -150,7 +150,7 @@ def create_submission(
 
 
 def cancel_submission(submissions: list[Submission], submission_id: int) -> bool:
-    """Отменить сдачу по ID. Вернуть True, если сдача найдена."""
+    """РћС‚РјРµРЅРёС‚СЊ СЃРґР°С‡Сѓ РїРѕ ID. Р’РµСЂРЅСѓС‚СЊ True, РµСЃР»Рё СЃРґР°С‡Р° РЅР°Р№РґРµРЅР°."""
     for s in submissions:
         if s.id == submission_id:
             s.cancel()
@@ -159,7 +159,7 @@ def cancel_submission(submissions: list[Submission], submission_id: int) -> bool
 
 
 def get_statistics(submissions: list[Submission]) -> dict:
-    """Вернуть статистику по сдачам."""
+    """Р’РµСЂРЅСѓС‚СЊ СЃС‚Р°С‚РёСЃС‚РёРєСѓ РїРѕ СЃРґР°С‡Р°Рј."""
     if not submissions:
         return {"total": 0, "submitted": 0, "average_score": 0.0}
     active = [s for s in submissions if not s.is_cancelled]
@@ -172,10 +172,11 @@ def get_statistics(submissions: list[Submission]) -> dict:
 
 
 def show_submissions(submissions: list[Submission]) -> None:
-    """Вывести список сдач."""
+    """Р’С‹РІРµСЃС‚Рё СЃРїРёСЃРѕРє СЃРґР°С‡."""
     if not submissions:
-        print("Список сдач пуст.")
+        print("РЎРїРёСЃРѕРє СЃРґР°С‡ РїСѓСЃС‚.")
         return
-    print("\n--- Сдачи ---")
+    print("\n--- РЎРґР°С‡Рё ---")
     for s in submissions:
         print(s)
+

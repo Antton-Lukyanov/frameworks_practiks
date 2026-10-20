@@ -1,11 +1,11 @@
-"""Настройки веб-приложения сервиса сдачи заданий."""
+﻿"""РќР°СЃС‚СЂРѕР№РєРё РІРµР±-РїСЂРёР»РѕР¶РµРЅРёСЏ СЃРµСЂРІРёСЃР° СЃРґР°С‡Рё Р·Р°РґР°РЅРёР№."""
 
 from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-task-service-development-key"
-DEBUG = False
+DEBUG = True  # Р’РєР»СЋС‡РµРЅРѕ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ СЃС‚РёР»РµР№ РїСЂРё Р·Р°РїСѓСЃРєРµ
 ALLOWED_HOSTS = ["localhost", "127.0.0.1", "testserver"]
 
 INSTALLED_APPS = [
@@ -52,8 +52,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "task_service.wsgi.application"
 ASGI_APPLICATION = "task_service.asgi.application"
 
-# Django сохраняет стандартную конфигурацию БД для админки и следующих этапов.
-# Предметные данные по-прежнему читаются из JSON, ORM-модели не используются.
+# Django СЃРѕС…СЂР°РЅСЏРµС‚ СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ Р‘Р” РґР»СЏ Р°РґРјРёРЅРєРё Рё СЃР»РµРґСѓСЋС‰РёС… СЌС‚Р°РїРѕРІ.
+# РџСЂРµРґРјРµС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ РїРѕ-РїСЂРµР¶РЅРµРјСѓ С‡РёС‚Р°СЋС‚СЃСЏ РёР· JSON, ORM-РјРѕРґРµР»Рё РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -66,5 +66,6 @@ LANGUAGE_CODE = "ru-RU"
 TIME_ZONE = "Europe/Moscow"
 USE_I18N = True
 USE_TZ = True
-STATIC_URL = "static/"
+STATIC_URL = "/static/"  # Р”РѕР±Р°РІР»РµРЅ СЃР»РµС€ РІ РЅР°С‡Р°Р»Рµ РїРѕ СЃС‚Р°РЅРґР°СЂС‚Сѓ Django
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+

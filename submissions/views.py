@@ -1,4 +1,4 @@
-"""Представления списка сдач и карточки сдачи."""
+﻿"""РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ СЃРїРёСЃРєР° СЃРґР°С‡ Рё РєР°СЂС‚РѕС‡РєРё СЃРґР°С‡Рё."""
 
 from django.conf import settings
 from django.shortcuts import render
@@ -7,7 +7,7 @@ from storage import load_students, load_submissions, load_tasks
 
 
 def _get_submissions():
-    """Загрузить сдачи и связанные с ними объекты из JSON-файлов."""
+    """Р—Р°РіСЂСѓР·РёС‚СЊ СЃРґР°С‡Рё Рё СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РЅРёРјРё РѕР±СЉРµРєС‚С‹ РёР· JSON-С„Р°Р№Р»РѕРІ."""
     data_dir = settings.BASE_DIR / "data"
     students = load_students(str(data_dir / "students.json"))
     tasks = load_tasks(str(data_dir / "tasks.json"))
@@ -19,7 +19,7 @@ def _get_submissions():
 
 
 def submission_list(request):
-    """Показать сдачи из JSON."""
+    """РџРѕРєР°Р·Р°С‚СЊ СЃРґР°С‡Рё РёР· JSON."""
     submissions = _get_submissions()
     return render(
         request,
@@ -29,7 +29,7 @@ def submission_list(request):
 
 
 def submission_detail(request, submission_id):
-    """Показать карточку сдачи или шаблон ошибки с HTTP 404."""
+    """РџРѕРєР°Р·Р°С‚СЊ РєР°СЂС‚РѕС‡РєСѓ СЃРґР°С‡Рё РёР»Рё С€Р°Р±Р»РѕРЅ РѕС€РёР±РєРё СЃ HTTP 404."""
     submissions = _get_submissions()
     submission = next(
         (item for item in submissions if item.id == submission_id),
@@ -41,3 +41,4 @@ def submission_detail(request, submission_id):
         {"submission": submission},
         status=404 if submission is None else 200,
     )
+

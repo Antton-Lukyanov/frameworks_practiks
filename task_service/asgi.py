@@ -1,4 +1,4 @@
-"""ASGI-конфигурация проекта."""
+﻿"""ASGI-РєРѕРЅС„РёРіСѓСЂР°С†РёСЏ РїСЂРѕРµРєС‚Р°."""
 
 import os
 
@@ -7,3 +7,4 @@ from django.core.asgi import get_asgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "task_service.settings")
 application = get_asgi_application()
+

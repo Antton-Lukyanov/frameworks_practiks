@@ -1,4 +1,4 @@
-"""Тесты класса Submission и функций работы со сдачами."""
+﻿"""РўРµСЃС‚С‹ РєР»Р°СЃСЃР° Submission Рё С„СѓРЅРєС†РёР№ СЂР°Р±РѕС‚С‹ СЃРѕ СЃРґР°С‡Р°РјРё."""
 
 from models.students import Student
 from models.tasks import Task
@@ -14,11 +14,11 @@ from models.submissions import (
 
 
 def _make_student() -> Student:
-    return Student(1, "Васильчук Егор", "ЭФБО-02-24")
+    return Student(1, "Р’Р°СЃРёР»СЊС‡СѓРє Р•РіРѕСЂ", "Р­Р¤Р‘Рћ-02-24")
 
 
 def _make_task() -> Task:
-    return Task(1, "Практическая работа №1", 100, "2026-09-15")
+    return Task(1, "РџСЂР°РєС‚РёС‡РµСЃРєР°СЏ СЂР°Р±РѕС‚Р° в„–1", 100, "2026-09-15")
 
 
 def test_submission_creation():
@@ -61,14 +61,14 @@ def test_cancel_submission():
 
 
 def test_get_result():
-    assert get_result(90) == "Отлично"
-    assert get_result(70) == "Хорошо"
-    assert get_result(50) == "Требуется доработка"
+    assert get_result(90) == "РћС‚Р»РёС‡РЅРѕ"
+    assert get_result(70) == "РҐРѕСЂРѕС€Рѕ"
+    assert get_result(50) == "РўСЂРµР±СѓРµС‚СЃСЏ РґРѕСЂР°Р±РѕС‚РєР°"
 
 
 def test_check_file_size():
-    assert check_file_size(5.0) == "Файл допустимого размера"
-    assert check_file_size(15.0) == "Файл слишком большой (макс. 10 МБ)"
+    assert check_file_size(5.0) == "Р¤Р°Р№Р» РґРѕРїСѓСЃС‚РёРјРѕРіРѕ СЂР°Р·РјРµСЂР°"
+    assert check_file_size(15.0) == "Р¤Р°Р№Р» СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕР№ (РјР°РєСЃ. 10 РњР‘)"
 
 
 def test_get_statistics():
@@ -79,3 +79,4 @@ def test_get_statistics():
     assert stats["total"] == 1
     assert stats["submitted"] == 1
     assert stats["average_score"] == 80.0
+

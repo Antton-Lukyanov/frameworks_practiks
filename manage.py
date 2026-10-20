@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-"""Утилита командной строки для управления Django-проектом."""
+﻿#!/usr/bin/env python
+"""РЈС‚РёР»РёС‚Р° РєРѕРјР°РЅРґРЅРѕР№ СЃС‚СЂРѕРєРё РґР»СЏ СѓРїСЂР°РІР»РµРЅРёСЏ Django-РїСЂРѕРµРєС‚РѕРј."""
 
 import os
 import sys
@@ -11,7 +11,7 @@ def main() -> None:
         from django.core.management import execute_from_command_line
     except ImportError as exc:
         raise ImportError(
-            "Django не установлен. Установите зависимости: "
+            "Django РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅ. РЈСЃС‚Р°РЅРѕРІРёС‚Рµ Р·Р°РІРёСЃРёРјРѕСЃС‚Рё: "
             "pip install -r requirements.txt"
         ) from exc
     execute_from_command_line(sys.argv)
@@ -19,3 +19,4 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+

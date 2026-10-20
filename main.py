@@ -1,4 +1,4 @@
-"""Точка запуска приложения «Сервис сдачи заданий»."""
+﻿"""РўРѕС‡РєР° Р·Р°РїСѓСЃРєР° РїСЂРёР»РѕР¶РµРЅРёСЏ В«РЎРµСЂРІРёСЃ СЃРґР°С‡Рё Р·Р°РґР°РЅРёР№В»."""
 
 from __future__ import annotations
 
@@ -21,19 +21,19 @@ from utils import input_int, input_str, input_float
 
 
 def menu() -> None:
-    """Вывести главное меню."""
-    print("\n=== Сервис сдачи заданий ===")
-    print("1. Показать студентов")
-    print("2. Добавить студента")
-    print("3. Найти студента")
-    print("4. Показать задания")
-    print("5. Добавить задание")
-    print("6. Найти задание")
-    print("7. Показать сдачи")
-    print("8. Сдать задание")
-    print("9. Отменить сдачу")
-    print("10. Статистика")
-    print("0. Выход")
+    """Р’С‹РІРµСЃС‚Рё РіР»Р°РІРЅРѕРµ РјРµРЅСЋ."""
+    print("\n=== РЎРµСЂРІРёСЃ СЃРґР°С‡Рё Р·Р°РґР°РЅРёР№ ===")
+    print("1. РџРѕРєР°Р·Р°С‚СЊ СЃС‚СѓРґРµРЅС‚РѕРІ")
+    print("2. Р”РѕР±Р°РІРёС‚СЊ СЃС‚СѓРґРµРЅС‚Р°")
+    print("3. РќР°Р№С‚Рё СЃС‚СѓРґРµРЅС‚Р°")
+    print("4. РџРѕРєР°Р·Р°С‚СЊ Р·Р°РґР°РЅРёСЏ")
+    print("5. Р”РѕР±Р°РІРёС‚СЊ Р·Р°РґР°РЅРёРµ")
+    print("6. РќР°Р№С‚Рё Р·Р°РґР°РЅРёРµ")
+    print("7. РџРѕРєР°Р·Р°С‚СЊ СЃРґР°С‡Рё")
+    print("8. РЎРґР°С‚СЊ Р·Р°РґР°РЅРёРµ")
+    print("9. РћС‚РјРµРЅРёС‚СЊ СЃРґР°С‡Сѓ")
+    print("10. РЎС‚Р°С‚РёСЃС‚РёРєР°")
+    print("0. Р’С‹С…РѕРґ")
 
 
 def create_new_submission(
@@ -41,61 +41,61 @@ def create_new_submission(
     students: list[Student],
     tasks: list[Task],
 ) -> None:
-    """Сценарий сдачи задания: поиск студента и задания, создание объекта Submission."""
-    student_id = input_int("ID студента: ")
+    """РЎС†РµРЅР°СЂРёР№ СЃРґР°С‡Рё Р·Р°РґР°РЅРёСЏ: РїРѕРёСЃРє СЃС‚СѓРґРµРЅС‚Р° Рё Р·Р°РґР°РЅРёСЏ, СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° Submission."""
+    student_id = input_int("ID СЃС‚СѓРґРµРЅС‚Р°: ")
     student = get_student_by_id(students, student_id)
     if student is None:
-        print("Студент с таким ID не найден.")
+        print("РЎС‚СѓРґРµРЅС‚ СЃ С‚Р°РєРёРј ID РЅРµ РЅР°Р№РґРµРЅ.")
         return
 
-    task_id = input_int("ID задания: ")
+    task_id = input_int("ID Р·Р°РґР°РЅРёСЏ: ")
     task = get_task_by_id(tasks, task_id)
     if task is None:
-        print("Задание с таким ID не найдено.")
+        print("Р—Р°РґР°РЅРёРµ СЃ С‚Р°РєРёРј ID РЅРµ РЅР°Р№РґРµРЅРѕ.")
         return
 
-    file_name = input_str("Имя файла: ")
-    file_size_mb = input_float("Размер файла (МБ): ")
+    file_name = input_str("РРјСЏ С„Р°Р№Р»Р°: ")
+    file_size_mb = input_float("Р Р°Р·РјРµСЂ С„Р°Р№Р»Р° (РњР‘): ")
 
     submission = create_submission(submissions, student, task, file_name, file_size_mb)
     if submission is None:
-        print("Задание уже сдано этим студентом.")
+        print("Р—Р°РґР°РЅРёРµ СѓР¶Рµ СЃРґР°РЅРѕ СЌС‚РёРј СЃС‚СѓРґРµРЅС‚РѕРј.")
     else:
-        print(f"Сдача зафиксирована. ID = {submission.id}")
+        print(f"РЎРґР°С‡Р° Р·Р°С„РёРєСЃРёСЂРѕРІР°РЅР°. ID = {submission.id}")
 
 
 def main() -> None:
-    """Точка запуска: цикл меню и вызов функций проекта."""
+    """РўРѕС‡РєР° Р·Р°РїСѓСЃРєР°: С†РёРєР» РјРµРЅСЋ Рё РІС‹Р·РѕРІ С„СѓРЅРєС†РёР№ РїСЂРѕРµРєС‚Р°."""
     students = load_students("data/students.json")
     tasks = load_tasks("data/tasks.json")
     submissions = load_submissions("data/submissions.json", students, tasks)
 
     while True:
         menu()
-        choice = input_int("Выберите действие: ")
+        choice = input_int("Р’С‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ: ")
 
         if choice == 1:
             show_students(students)
         elif choice == 2:
-            name = input_str("Имя студента: ")
-            group = input_str("Группа: ")
+            name = input_str("РРјСЏ СЃС‚СѓРґРµРЅС‚Р°: ")
+            group = input_str("Р“СЂСѓРїРїР°: ")
             add_student(students, name, group)
             save_students("data/students.json", students)
-            print("Студент добавлен.")
+            print("РЎС‚СѓРґРµРЅС‚ РґРѕР±Р°РІР»РµРЅ.")
         elif choice == 3:
-            query = input_str("Подстрока имени: ")
+            query = input_str("РџРѕРґСЃС‚СЂРѕРєР° РёРјРµРЅРё: ")
             show_students(find_student(students, query))
         elif choice == 4:
             show_tasks(tasks)
         elif choice == 5:
-            title = input_str("Название задания: ")
-            max_score = input_int("Максимальный балл: ")
-            deadline = input_str("Дедлайн (ГГГГ-ММ-ДД): ")
+            title = input_str("РќР°Р·РІР°РЅРёРµ Р·Р°РґР°РЅРёСЏ: ")
+            max_score = input_int("РњР°РєСЃРёРјР°Р»СЊРЅС‹Р№ Р±Р°Р»Р»: ")
+            deadline = input_str("Р”РµРґР»Р°Р№РЅ (Р“Р“Р“Р“-РњРњ-Р”Р”): ")
             add_task(tasks, title, max_score, deadline)
             save_tasks("data/tasks.json", tasks)
-            print("Задание добавлено.")
+            print("Р—Р°РґР°РЅРёРµ РґРѕР±Р°РІР»РµРЅРѕ.")
         elif choice == 6:
-            query = input_str("Подстрока названия: ")
+            query = input_str("РџРѕРґСЃС‚СЂРѕРєР° РЅР°Р·РІР°РЅРёСЏ: ")
             show_tasks(find_task(tasks, query))
         elif choice == 7:
             show_submissions(submissions)
@@ -103,23 +103,24 @@ def main() -> None:
             create_new_submission(submissions, students, tasks)
             save_submissions("data/submissions.json", submissions)
         elif choice == 9:
-            submission_id = input_int("ID сдачи: ")
+            submission_id = input_int("ID СЃРґР°С‡Рё: ")
             if cancel_submission(submissions, submission_id):
                 save_submissions("data/submissions.json", submissions)
-                print("Сдача отменена.")
+                print("РЎРґР°С‡Р° РѕС‚РјРµРЅРµРЅР°.")
             else:
-                print("Сдача с таким ID не найдена.")
+                print("РЎРґР°С‡Р° СЃ С‚Р°РєРёРј ID РЅРµ РЅР°Р№РґРµРЅР°.")
         elif choice == 10:
             stats = get_statistics(submissions)
-            print(f"\nВсего сдач: {stats['total']}")
-            print(f"Проверено: {stats['submitted']}")
-            print(f"Средний балл: {stats['average_score']:.2f}")
+            print(f"\nР’СЃРµРіРѕ СЃРґР°С‡: {stats['total']}")
+            print(f"РџСЂРѕРІРµСЂРµРЅРѕ: {stats['submitted']}")
+            print(f"РЎСЂРµРґРЅРёР№ Р±Р°Р»Р»: {stats['average_score']:.2f}")
         elif choice == 0:
-            print("Выход из программы.")
+            print("Р’С‹С…РѕРґ РёР· РїСЂРѕРіСЂР°РјРјС‹.")
             break
         else:
-            print("Некорректный пункт меню.")
+            print("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РїСѓРЅРєС‚ РјРµРЅСЋ.")
 
 
 if __name__ == "__main__":
     main()
+
