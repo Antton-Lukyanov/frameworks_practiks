@@ -1,4 +1,4 @@
-﻿"""РўРµСЃС‚С‹ РєР»Р°СЃСЃР° Student Рё С„СѓРЅРєС†РёР№ СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ СЃС‚СѓРґРµРЅС‚РѕРІ."""
+"""РўРµСЃС‚С‹ РєР»Р°СЃСЃР° Student Рё С„СѓРЅРєС†РёР№ СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ СЃС‚СѓРґРµРЅС‚РѕРІ."""
 
 from models.students import (
     Student, add_student, find_student, get_student_by_id,
@@ -32,11 +32,11 @@ def test_add_student():
 
 def test_find_student():
     students = []
-    add_student(students, "Р’Р°СЃРёР»СЊС‡СѓРє Р•РіРѕСЂ", "Р­Р¤Р‘Рћ-02-24")
-    add_student(students, "РРІР°РЅРѕРІ РРІР°РЅ", "Р­Р¤Р‘Рћ-02-24")
-    found = find_student(students, "РёРІР°РЅ")
-    assert len(found) == 1
-    assert found[0].name == "РРІР°РЅРѕРІ РРІР°РЅ"
+    add_student(students, "Васильчук Егор", "ЭФБО-02-24")
+    add_student(students, "Иванов Иван", "ЭФБО-02-24")
+    found = find_student(students, "иван")
+    assert found[0].name == "Иванов Иван"
+    assert found[0].name == "Иванов Иван"
 
 
 def test_get_student_by_id():

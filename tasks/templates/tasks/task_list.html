@@ -8,15 +8,45 @@
             <p class="eyebrow">Учебный план</p>
             <h1>Задания</h1>
         </div>
-        <span class="count-pill">{{ tasks|length }} всего</span>
+        <span class="count-pill">{{ page_obj.paginator.count }} всего</span>
     </div>
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-md-4">
+            <label for="task-search" class="form-label">Поиск по названию</label>
+            <input id="task-search" class="form-control" type="search"
+                   name="q" value="{{ search_query }}" placeholder="Название задания">
+        </div>
+        <div class="col-md-2">
+            <label for="deadline-from" class="form-label">Срок с</label>
+            <input id="deadline-from" class="form-control" type="date"
+                   name="deadline_from" value="{{ deadline_from }}">
+        </div>
+        <div class="col-md-2">
+            <label for="deadline-to" class="form-label">Срок по</label>
+            <input id="deadline-to" class="form-control" type="date"
+                   name="deadline_to" value="{{ deadline_to }}">
+        </div>
+        <div class="col-md-2">
+            <label for="task-order" class="form-label">Сортировка</label>
+            <select id="task-order" class="form-select" name="order">
+                <option value="deadline"{% if selected_order == "deadline" %} selected{% endif %}>По сроку</option>
+                <option value="deadline_desc"{% if selected_order == "deadline_desc" %} selected{% endif %}>Срок: новые</option>
+                <option value="title"{% if selected_order == "title" %} selected{% endif %}>По названию</option>
+                <option value="submissions"{% if selected_order == "submissions" %} selected{% endif %}>По числу сдач</option>
+                <option value="score"{% if selected_order == "score" %} selected{% endif %}>По среднему баллу</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Применить</button>
+            <a class="btn btn-outline-secondary" href="{% url 'tasks:list' %}">Сбросить</a>
+        </div>
+    </form>
     <div class="row g-3">
         {% for task in tasks %}
             {% include "tasks/includes/task_card.html" %}
         {% empty %}
-            <div class="col-12">
-                <p class="empty-state">Заданий пока нет.</p>
-            </div>
+            <div class="col-12"><p class="empty-state">Задания не найдены.</p></div>
         {% endfor %}
     </div>
+    {% include "includes/pagination.html" %}
 {% endblock %}

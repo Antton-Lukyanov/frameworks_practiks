@@ -1,4 +1,4 @@
-"""SQLite connection helpers used by the Django views."""
+"""Legacy SQLite connection helpers retained for the PR7 SQL exercises."""
 
 from __future__ import annotations
 

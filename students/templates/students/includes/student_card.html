@@ -4,6 +4,8 @@
             <p class="eyebrow">Студент №{{ student.id }}</p>
             <h2 class="h5">{{ student.name|default:"Имя не указано" }}</h2>
             <p class="text-muted">Группа: {{ student.group|default:"—" }}</p>
+            <p class="text-muted mb-1">Активных сдач: {{ student.submission_count }}</p>
+            <p class="text-muted">Средний балл: {{ student.average_score|default:"—"|floatformat:1 }}</p>
             <a class="btn btn-sm btn-outline-primary"
                href="{% url 'students:detail' student.id %}">Подробнее</a>
         </div>

@@ -4,22 +4,27 @@
 
 {% block content %}
     <section class="hero-panel">
-        <p class="eyebrow">Учебный проект · ПР6</p>
+        <p class="eyebrow">Учебный проект · ПР9</p>
         <h1 class="display-5 fw-bold">Сервис сдачи заданий</h1>
         <p class="lead">
-            Просматривайте студентов, учебные задания и результаты сдачи
-            в одном месте.
+            Просматривайте студентов, задания и результаты сдачи. Данные
+            хранятся в SQLite и обрабатываются средствами Django ORM.
         </p>
         <div class="d-flex flex-wrap gap-2 mt-4">
-            <a class="btn btn-primary btn-lg"
-               href="{% url 'students:list' %}">Студенты</a>
-            <a class="btn btn-outline-primary btn-lg"
-               href="{% url 'tasks:list' %}">Задания</a>
-            <a class="btn btn-outline-primary btn-lg"
-               href="{% url 'submissions:list' %}">Сдачи</a>
+            <a class="btn btn-primary btn-lg" href="{% url 'students:list' %}">Студенты</a>
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'tasks:list' %}">Задания</a>
+            <a class="btn btn-outline-primary btn-lg" href="{% url 'submissions:list' %}">Сдачи</a>
         </div>
     </section>
+    <div class="row g-3 mt-3">
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Студенты</p><h2>{{ student_count }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Задания</p><h2>{{ task_count }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Активные сдачи</p><h2>{{ statistics.total|default:0 }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Средний балл</p><h2>{{ statistics.average_score|default:0|floatformat:1 }}</h2></div></article></div>
+    </div>
     <p class="text-muted mt-4">
-        Веб-интерфейс использует существующие объекты и JSON-файлы проекта.
+        Оценки: сумма {{ statistics.total_score|default:0 }}, минимум
+        {{ statistics.minimum_score|default:0 }}, максимум
+        {{ statistics.maximum_score|default:0 }}.
     </p>
 {% endblock %}

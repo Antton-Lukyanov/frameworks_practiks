@@ -1,4 +1,4 @@
-﻿"""РўРµСЃС‚С‹ РєР»Р°СЃСЃР° Task Рё С„СѓРЅРєС†РёР№ СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ Р·Р°РґР°РЅРёР№."""
+"""РўРµСЃС‚С‹ РєР»Р°СЃСЃР° Task Рё С„СѓРЅРєС†РёР№ СЂР°Р±РѕС‚С‹ СЃ РєРѕР»Р»РµРєС†РёРµР№ Р·Р°РґР°РЅРёР№."""
 
 from models.tasks import (
     Task, add_task, find_task, get_task_by_id, filter_tasks_by_deadline,
@@ -33,9 +33,9 @@ def test_add_task():
 
 def test_find_task():
     tasks = []
-    add_task(tasks, "РџСЂР°РєС‚РёС‡РµСЃРєР°СЏ СЂР°Р±РѕС‚Р° в„–1", 100, "2026-09-15")
-    add_task(tasks, "РљСѓСЂСЃРѕРІР°СЏ СЂР°Р±РѕС‚Р°", 100, "2026-12-01")
-    found = find_task(tasks, "РїСЂР°РєС‚РёС‡РµСЃРєР°СЏ")
+    add_task(tasks, "Практическая работа №1", 100, "2026-09-15")
+    add_task(tasks, "Курсовая работа", 100, "2026-12-01")
+    found = find_task(tasks, "практическая")
     assert len(found) == 1
     assert found[0].id == 1
 

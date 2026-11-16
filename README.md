@@ -10,23 +10,21 @@
 - `Task` — задание, максимальный балл и дедлайн;
 - `Submission` — сдача задания студентом, имя файла, размер, дата, балл и статус.
 
-Исходные данные хранятся в `data/students.json`, `data/tasks.json` и
-`data/submissions.json`. Веб-интерфейс читает записи из SQLite через
-параметризованные SQL-запросы в `db/queries.py`; консольная программа `main.py`
-по-прежнему использует JSON и классы из `models/`.
-
-Схема таблиц находится в `db/schema.sql`. Файл базы `db/project.sqlite3`
-создаётся автоматически при первом обращении сайта к данным и наполняется
-исходными JSON-записями. Импорт можно повторить после изменения JSON командой
-`python -m db.import_json`.
+Основные данные веб-приложения хранятся в SQLite и описаны Django-моделями в
+`students/models.py`, `tasks/models.py` и `submissions/models.py`. Связь сдачи
+со студентом и заданием реализована через `ForeignKey`. Миграция переносит
+записи из `db/project.sqlite3`, если эта база ПР7 доступна, или из версионируемых
+JSON-файлов как резервного источника. Консольная программа `main.py` и модели из
+верхнеуровневого пакета `models/` сохранены для прежних практических работ.
+SQL-схема и набор ручных SQL-запросов ПР7 остаются в `sql/`.
 
 ## Технологии
 
 - Python 3.10+;
 - Django 5.2 и Django Template Language;
 - HTML5, CSS3, JavaScript и Bootstrap 5.3;
-- SQLite и SQL для веб-интерфейса;
-- JSON для консольной версии и первоначального импорта;
+- Django ORM и SQLite для веб-интерфейса;
+- JSON для консольной версии и переноса исходных данных;
 - pytest и flake8 для проверки консольного проекта.
 
 ## Страницы
@@ -40,6 +38,7 @@
 | `/tasks/<int:task_id>/` | Карточка задания | `tasks.views.task_detail()` |
 | `/submissions/` | Список сдач | `submissions.views.submission_list()` |
 | `/submissions/<int:submission_id>/` | Карточка сдачи | `submissions.views.submission_detail()` |
+| `/admin/` | Управление данными | Django Admin |
 
 Несуществующие карточки возвращают HTTP 404 и показывают сообщение из шаблона.
 Ссылки в HTML строятся через именованные маршруты с пространствами имён,
@@ -70,9 +69,12 @@ py -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python manage.py check
-python -m db.import_json
+python manage.py migrate
 python manage.py runserver --insecure
 ```
+
+Для управления записями через `/admin/` создайте администратора командой
+`python manage.py createsuperuser`.
 
 Откройте <http://127.0.0.1:8000/>. Флаг `--insecure` включает раздачу
 статических файлов встроенным сервером при `DEBUG = False`; это подходит только
@@ -81,6 +83,8 @@ python manage.py runserver --insecure
 
 ## Состояние проекта
 
-Веб-интерфейс поддерживает просмотр списков и карточек из SQLite. Добавление и
-изменение записей через формы, аутентификация и Django ORM относятся к следующим
-этапам.
+Списки студентов, заданий и сдач поддерживают поиск, фильтрацию, сортировку и
+пагинацию. Карточки показывают связанные записи; выборки используют
+`select_related()` и `prefetch_related()`. Главная страница выводит сводные
+агрегаты оценок. Создание, изменение и удаление записей доступны через Django
+Admin.

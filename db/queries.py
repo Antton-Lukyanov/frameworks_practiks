@@ -1,4 +1,4 @@
-"""Parameterized SQL queries used by the web pages."""
+"""Parameterized SQL examples retained from PR7; web pages now use the ORM."""
 
 from __future__ import annotations
 
