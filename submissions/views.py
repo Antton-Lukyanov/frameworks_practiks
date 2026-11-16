@@ -1,26 +1,36 @@
-﻿"""РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ СЃРїРёСЃРєР° СЃРґР°С‡ Рё РєР°СЂС‚РѕС‡РєРё СЃРґР°С‡Рё."""
+"""Submission list and detail pages backed by SQLite joins."""
 
-from django.conf import settings
 from django.shortcuts import render
 
-from storage import load_students, load_submissions, load_tasks
+from db.queries import fetch_submission, fetch_submissions
+from models.students import Student
+from models.submissions import Submission
+from models.tasks import Task
 
 
-def _get_submissions():
-    """Р—Р°РіСЂСѓР·РёС‚СЊ СЃРґР°С‡Рё Рё СЃРІСЏР·Р°РЅРЅС‹Рµ СЃ РЅРёРјРё РѕР±СЉРµРєС‚С‹ РёР· JSON-С„Р°Р№Р»РѕРІ."""
-    data_dir = settings.BASE_DIR / "data"
-    students = load_students(str(data_dir / "students.json"))
-    tasks = load_tasks(str(data_dir / "tasks.json"))
-    return load_submissions(
-        str(data_dir / "submissions.json"),
-        students,
-        tasks,
+def _to_submission(row):
+    student = Student(row["student_id"], row["student_name"], row["student_group"])
+    task = Task(
+        row["task_id"],
+        row["task_title"],
+        row["max_score"],
+        row["deadline"],
     )
+    submission = Submission(
+        row["id"],
+        student,
+        task,
+        row["file_name"],
+        row["file_size_mb"],
+        row["score"],
+        row["submission_date"],
+    )
+    submission.is_cancelled = bool(row["is_cancelled"])
+    return submission
 
 
 def submission_list(request):
-    """РџРѕРєР°Р·Р°С‚СЊ СЃРґР°С‡Рё РёР· JSON."""
-    submissions = _get_submissions()
+    submissions = [_to_submission(row) for row in fetch_submissions()]
     return render(
         request,
         "submissions/submission_list.html",
@@ -29,16 +39,11 @@ def submission_list(request):
 
 
 def submission_detail(request, submission_id):
-    """РџРѕРєР°Р·Р°С‚СЊ РєР°СЂС‚РѕС‡РєСѓ СЃРґР°С‡Рё РёР»Рё С€Р°Р±Р»РѕРЅ РѕС€РёР±РєРё СЃ HTTP 404."""
-    submissions = _get_submissions()
-    submission = next(
-        (item for item in submissions if item.id == submission_id),
-        None,
-    )
+    row = fetch_submission(submission_id)
+    submission = _to_submission(row) if row is not None else None
     return render(
         request,
         "submissions/submission_detail.html",
         {"submission": submission},
         status=404 if submission is None else 200,
     )
-

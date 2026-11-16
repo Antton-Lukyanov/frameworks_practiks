@@ -10,17 +10,23 @@
 - `Task` — задание, максимальный балл и дедлайн;
 - `Submission` — сдача задания студентом, имя файла, размер, дата, балл и статус.
 
-Данные загружаются из `data/students.json`, `data/tasks.json` и
-`data/submissions.json`. Веб-представления используют классы и функции из
-`models/` и загрузчики из `storage.py`. Django ORM, миграции и формы пока не
-используются. Консольная программа `main.py` и её тесты сохранены.
+Исходные данные хранятся в `data/students.json`, `data/tasks.json` и
+`data/submissions.json`. Веб-интерфейс читает записи из SQLite через
+параметризованные SQL-запросы в `db/queries.py`; консольная программа `main.py`
+по-прежнему использует JSON и классы из `models/`.
+
+Схема таблиц находится в `db/schema.sql`. Файл базы `db/project.sqlite3`
+создаётся автоматически при первом обращении сайта к данным и наполняется
+исходными JSON-записями. Импорт можно повторить после изменения JSON командой
+`python -m db.import_json`.
 
 ## Технологии
 
 - Python 3.10+;
 - Django 5.2 и Django Template Language;
 - HTML5, CSS3, JavaScript и Bootstrap 5.3;
-- JSON как хранилище данных;
+- SQLite и SQL для веб-интерфейса;
+- JSON для консольной версии и первоначального импорта;
 - pytest и flake8 для проверки консольного проекта.
 
 ## Страницы
@@ -64,6 +70,7 @@ py -m venv .venv
 .venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 python manage.py check
+python -m db.import_json
 python manage.py runserver --insecure
 ```
 
@@ -74,6 +81,6 @@ python manage.py runserver --insecure
 
 ## Состояние проекта
 
-Веб-интерфейс поддерживает просмотр списков и карточек. Добавление и изменение
-записей через формы, аутентификация, Django ORM и работа с базой данных относятся
-к следующим этапам.
+Веб-интерфейс поддерживает просмотр списков и карточек из SQLite. Добавление и
+изменение записей через формы, аутентификация и Django ORM относятся к следующим
+этапам.
