@@ -1,6 +1,6 @@
 """Homepage and shared error page for the assignment service."""
 
-from django.db.models import Avg, Count, Max, Min, Sum
+from django.db.models import Avg, Count, Max, Min, Q, Sum
 from django.shortcuts import render
 
 from students.models import Student
@@ -9,18 +9,34 @@ from tasks.models import Task
 
 
 def index(request):
-    active_submissions = Submission.objects.filter(is_cancelled=False)
-    scored_submissions = active_submissions.exclude(score=0)
-    statistics = active_submissions.aggregate(
+    statistics = Submission.objects.aggregate(
         total=Count("id"),
-        total_score=Sum("score"),
-    )
-    statistics.update(
-        scored_submissions.aggregate(
-            average_score=Avg("score"),
-            minimum_score=Min("score"),
-            maximum_score=Max("score"),
-        )
+        active=Count("id", filter=Q(status=Submission.Status.ACTIVE)),
+        cancelled=Count("id", filter=Q(status=Submission.Status.CANCELLED)),
+        completed=Count("id", filter=Q(status=Submission.Status.COMPLETED)),
+        passing=Count(
+            "id",
+            filter=Q(
+                status=Submission.Status.COMPLETED,
+                is_passing=True,
+            ),
+        ),
+        total_score=Sum(
+            "score",
+            filter=Q(status=Submission.Status.COMPLETED),
+        ),
+        average_score=Avg(
+            "score",
+            filter=Q(status=Submission.Status.COMPLETED),
+        ),
+        minimum_score=Min(
+            "score",
+            filter=Q(status=Submission.Status.COMPLETED),
+        ),
+        maximum_score=Max(
+            "score",
+            filter=Q(status=Submission.Status.COMPLETED),
+        ),
     )
     return render(
         request,

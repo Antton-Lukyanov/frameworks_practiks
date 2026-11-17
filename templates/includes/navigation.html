@@ -5,12 +5,12 @@
            href="{% url 'homepage:index' %}">
             <img src="{% static 'homepage/img/logo.svg' %}"
                  alt="" width="36" height="36">
-            Сервис заданий
+            {{ site_name }}
         </a>
         <div class="navbar-nav">
             <a class="nav-link" href="{% url 'homepage:index' %}">Главная</a>
             <a class="nav-link" href="{% url 'students:list' %}">Студенты</a>
-            <a class="nav-link" href="{% url 'tasks:list' %}">Задания</a>
+            <a class="nav-link" href="{% url 'tasks:list' %}">Задания <span class="badge text-bg-light">{{ site_task_count }}</span></a>
             <a class="nav-link" href="{% url 'submissions:list' %}">Сдачи</a>
         </div>
     </div>

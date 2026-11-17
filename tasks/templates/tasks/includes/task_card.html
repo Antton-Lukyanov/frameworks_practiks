@@ -7,7 +7,7 @@
             <p class="text-muted mb-1">Сдач: {{ task.submission_count }}</p>
             <p class="text-muted">Средний балл: {{ task.average_score|default:"—"|floatformat:1 }}</p>
             <a class="btn btn-sm btn-outline-primary"
-               href="{% url 'tasks:detail' task.id %}">Подробнее</a>
+               href="{{ task.get_absolute_url }}">Подробнее</a>
         </div>
     </article>
 </div>

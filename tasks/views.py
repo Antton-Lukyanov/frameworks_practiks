@@ -26,12 +26,17 @@ def task_list(request):
     tasks = Task.objects.annotate(
         submission_count=Count(
             "submissions",
-            filter=Q(submissions__is_cancelled=False),
+            filter=Q(
+                submissions__status__in=(
+                    Submission.Status.ACTIVE,
+                    Submission.Status.COMPLETED,
+                )
+            ),
         ),
         average_score=Avg(
             "submissions__score",
             filter=Q(
-                submissions__is_cancelled=False,
+                submissions__status=Submission.Status.COMPLETED,
                 submissions__score__gt=0,
             ),
         ),
@@ -68,13 +73,13 @@ def task_list(request):
     )
 
 
-def task_detail(request, task_id):
+def task_detail(request, slug):
     submissions = Submission.objects.select_related("student")
     task = get_object_or_404(
         Task.objects.prefetch_related(
             Prefetch("submissions", queryset=submissions)
         ),
-        pk=task_id,
+        **({"pk": int(slug)} if slug.isdecimal() else {"slug": slug}),
     )
     return render(
         request,

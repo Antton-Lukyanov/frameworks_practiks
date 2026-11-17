@@ -11,18 +11,42 @@
         <span class="count-pill">{{ page_obj.paginator.count }} всего</span>
     </div>
     <form method="get" class="row g-2 align-items-end mb-4">
-        <div class="col-md-5">
+        <div class="col-md-4">
             <label for="submission-search" class="form-label">Поиск</label>
             <input id="submission-search" class="form-control" type="search"
                    name="q" value="{{ search_query }}"
                    placeholder="Студент, задание или файл">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label for="submission-status" class="form-label">Статус</label>
             <select id="submission-status" class="form-select" name="status">
                 <option value="">Все</option>
                 <option value="active"{% if selected_status == "active" %} selected{% endif %}>Активные</option>
                 <option value="cancelled"{% if selected_status == "cancelled" %} selected{% endif %}>Отменённые</option>
+                <option value="completed"{% if selected_status == "completed" %} selected{% endif %}>Проверенные</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="submission-date" class="form-label">Дата сдачи</label>
+            <input id="submission-date" class="form-control" type="date"
+                   name="date" value="{{ selected_date }}">
+        </div>
+        <div class="col-md-2">
+            <label for="submission-task" class="form-label">Задание</label>
+            <select id="submission-task" class="form-select" name="task">
+                <option value="">Все задания</option>
+                {% for task in tasks %}
+                    <option value="{{ task.id }}"{% if selected_task == task.id|stringformat:"s" %} selected{% endif %}>{{ task.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="submission-student" class="form-label">Студент</label>
+            <select id="submission-student" class="form-select" name="student">
+                <option value="">Все студенты</option>
+                {% for student in students %}
+                    <option value="{{ student.id }}"{% if selected_student == student.id|stringformat:"s" %} selected{% endif %}>{{ student.name }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="col-md-2">
