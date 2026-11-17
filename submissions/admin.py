@@ -11,9 +11,14 @@ class SubmissionAdmin(admin.ModelAdmin):
         "task",
         "file_name",
         "score",
+        "is_passing",
         "submission_date",
-        "is_cancelled",
+        "status",
     )
-    list_filter = ("is_cancelled", "submission_date", "task")
+    list_filter = ("status", "submission_date", "task")
     search_fields = ("student__name", "task__title", "file_name")
     autocomplete_fields = ("student", "task")
+    ordering = ("-submission_date", "-id")
+    date_hierarchy = "submission_date"
+    list_select_related = ("student", "task")
+    list_per_page = 25

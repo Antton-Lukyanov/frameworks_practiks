@@ -15,14 +15,16 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     "homepage",
-    "students",
-    "tasks",
-    "submissions",
+    "students.apps.StudentsConfig",
+    "tasks.apps.TasksConfig",
+    "submissions.apps.SubmissionsConfig",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -44,6 +46,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "homepage.context_processors.site_metadata",
             ],
         },
     },
@@ -67,4 +70,5 @@ USE_I18N = True
 USE_TZ = True
 STATIC_URL = "/static/"  # Р”РѕР±Р°РІР»РµРЅ СЃР»РµС€ РІ РЅР°С‡Р°Р»Рµ РїРѕ СЃС‚Р°РЅРґР°СЂС‚Сѓ Django
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+INTERNAL_IPS = ["127.0.0.1"]
 

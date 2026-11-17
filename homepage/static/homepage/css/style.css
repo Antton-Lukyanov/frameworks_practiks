@@ -97,6 +97,11 @@ body {
     background: #f6e8ec;
 }
 
+.status-completed {
+    color: #17603a;
+    background: #e1f5e8;
+}
+
 .entity-card {
     transition: transform 160ms ease, box-shadow 160ms ease;
 }

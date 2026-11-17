@@ -24,12 +24,17 @@ def student_list(request):
     students = Student.objects.annotate(
         submission_count=Count(
             "submissions",
-            filter=Q(submissions__is_cancelled=False),
+            filter=Q(
+                submissions__status__in=(
+                    Submission.Status.ACTIVE,
+                    Submission.Status.COMPLETED,
+                )
+            ),
         ),
         average_score=Avg(
             "submissions__score",
             filter=Q(
-                submissions__is_cancelled=False,
+                submissions__status=Submission.Status.COMPLETED,
                 submissions__score__gt=0,
             ),
         ),

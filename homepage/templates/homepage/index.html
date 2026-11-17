@@ -4,7 +4,7 @@
 
 {% block content %}
     <section class="hero-panel">
-        <p class="eyebrow">Учебный проект · ПР9</p>
+        <p class="eyebrow">Учебный проект · ПР10</p>
         <h1 class="display-5 fw-bold">Сервис сдачи заданий</h1>
         <p class="lead">
             Просматривайте студентов, задания и результаты сдачи. Данные
@@ -19,8 +19,13 @@
     <div class="row g-3 mt-3">
         <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Студенты</p><h2>{{ student_count }}</h2></div></article></div>
         <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Задания</p><h2>{{ task_count }}</h2></div></article></div>
-        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Активные сдачи</p><h2>{{ statistics.total|default:0 }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Активные сдачи</p><h2>{{ statistics.active|default:0 }}</h2></div></article></div>
         <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Средний балл</p><h2>{{ statistics.average_score|default:0|floatformat:1 }}</h2></div></article></div>
+    </div>
+    <div class="row g-3 mt-1">
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Отменённые сдачи</p><h2>{{ statistics.cancelled|default:0 }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Проверенные сдачи</p><h2>{{ statistics.completed|default:0 }}</h2></div></article></div>
+        <div class="col-sm-6 col-lg-3"><article class="card entity-card h-100"><div class="card-body"><p class="eyebrow">Зачтённые работы</p><h2>{{ statistics.passing|default:0 }}</h2></div></article></div>
     </div>
     <p class="text-muted mt-4">
         Оценки: сумма {{ statistics.total_score|default:0 }}, минимум
