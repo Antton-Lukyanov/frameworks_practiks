@@ -24,6 +24,15 @@
                 <p><strong>Статус:</strong>
                     {% include "submissions/includes/submission_status.html" %}
                 </p>
+                <div class="d-flex gap-2 mt-4">
+                    <a class="btn btn-primary" href="{% url 'submissions:edit' submission.id %}">Изменить сдачу</a>
+                    {% if not submission.is_cancelled %}
+                        <form method="post" action="{% url 'submissions:cancel' submission.id %}">
+                            {% csrf_token %}
+                            <button class="btn btn-outline-danger" type="submit">Отменить сдачу</button>
+                        </form>
+                    {% endif %}
+                </div>
             </div>
         </article>
     {% else %}

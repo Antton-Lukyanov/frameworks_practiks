@@ -8,33 +8,19 @@
             <p class="eyebrow">Работы студентов</p>
             <h1>Сдачи заданий</h1>
         </div>
-        <span class="count-pill">{{ page_obj.paginator.count }} всего</span>
+        <div class="d-flex align-items-center gap-3">
+            <span class="count-pill">{{ page_obj.paginator.count }} всего</span>
+            <a class="btn btn-primary" href="{% url 'submissions:create' %}">Добавить сдачу</a>
+        </div>
     </div>
     <form method="get" class="row g-2 align-items-end mb-4">
-        <div class="col-md-5">
-            <label for="submission-search" class="form-label">Поиск</label>
-            <input id="submission-search" class="form-control" type="search"
-                   name="q" value="{{ search_query }}"
-                   placeholder="Студент, задание или файл">
-        </div>
-        <div class="col-md-3">
-            <label for="submission-status" class="form-label">Статус</label>
-            <select id="submission-status" class="form-select" name="status">
-                <option value="">Все</option>
-                <option value="active"{% if selected_status == "active" %} selected{% endif %}>Активные</option>
-                <option value="cancelled"{% if selected_status == "cancelled" %} selected{% endif %}>Отменённые</option>
-            </select>
-        </div>
-        <div class="col-md-2">
-            <label for="submission-order" class="form-label">Сортировка</label>
-            <select id="submission-order" class="form-select" name="order">
-                <option value="date"{% if selected_order == "date" %} selected{% endif %}>Сначала новые</option>
-                <option value="date_asc"{% if selected_order == "date_asc" %} selected{% endif %}>Сначала старые</option>
-                <option value="score"{% if selected_order == "score" %} selected{% endif %}>По баллам</option>
-                <option value="student"{% if selected_order == "student" %} selected{% endif %}>По студенту</option>
-                <option value="task"{% if selected_order == "task" %} selected{% endif %}>По заданию</option>
-            </select>
-        </div>
+        {% for field in filter_form %}
+            <div class="{% if field.name == 'q' %}col-md-5{% else %}col-md-3{% endif %}">
+                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+            </div>
+        {% endfor %}
         <div class="col-md-2 d-flex gap-2">
             <button class="btn btn-primary" type="submit">Применить</button>
             <a class="btn btn-outline-secondary" href="{% url 'submissions:list' %}">Сбросить</a>

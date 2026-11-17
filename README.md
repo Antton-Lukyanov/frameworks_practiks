@@ -36,8 +36,11 @@ SQL-схема и набор ручных SQL-запросов ПР7 остаю�
 | `/students/<int:student_id>/` | Карточка студента | `students.views.student_detail()` |
 | `/tasks/` | Список заданий | `tasks.views.task_list()` |
 | `/tasks/<int:task_id>/` | Карточка задания | `tasks.views.task_detail()` |
-| `/submissions/` | Список сдач | `submissions.views.submission_list()` |
+| `/submissions/` | Список сдач с фильтрами | `submissions.views.submission_list()` |
+| `/submissions/create/` | Создание сдачи через Django ModelForm | `submissions.views.submission_create()` |
 | `/submissions/<int:submission_id>/` | Карточка сдачи | `submissions.views.submission_detail()` |
+| `/submissions/<int:submission_id>/edit/` | Редактирование сдачи | `submissions.views.submission_update()` |
+| `/submissions/<int:submission_id>/cancel/` | Отмена сдачи (только POST) | `submissions.views.submission_cancel()` |
 | `/admin/` | Управление данными | Django Admin |
 
 Несуществующие карточки возвращают HTTP 404 и показывают сообщение из шаблона.
@@ -86,5 +89,8 @@ python manage.py runserver --insecure
 Списки студентов, заданий и сдач поддерживают поиск, фильтрацию, сортировку и
 пагинацию. Карточки показывают связанные записи; выборки используют
 `select_related()` и `prefetch_related()`. Главная страница выводит сводные
-агрегаты оценок. Создание, изменение и удаление записей доступны через Django
-Admin.
+агрегаты оценок. Записи сдач можно создавать, редактировать и отменять в
+пользовательском интерфейсе и через Django Admin. Фильтры списка валидируются
+формой `Form`, а создание и редактирование используют `ModelForm` с проверкой
+даты, максимального балла задания и отсутствия другой активной сдачи студента.
+Отмена сохраняет запись и её историю, меняя статус через CSRF-защищённый POST.

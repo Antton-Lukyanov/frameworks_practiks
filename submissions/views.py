@@ -1,16 +1,21 @@
 """Submission pages implemented with Django ORM querysets."""
 
+from django.contrib import messages
 from django.db.models import Q
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
+from .forms import SubmissionFilterForm, SubmissionForm
 from submissions.models import Submission
 from web_utils import paginate_queryset
 
 
 def submission_list(request):
-    query = request.GET.get("q", "").strip()
-    status = request.GET.get("status", "")
-    ordering = request.GET.get("order", "date")
+    filter_form = SubmissionFilterForm(request.GET)
+    filters = filter_form.cleaned_data if filter_form.is_valid() else {}
+    query = filters.get("q", "").strip()
+    status = filters.get("status", "")
+    ordering = filters.get("order") or "date"
     orderings = {
         "date": "-submission_date",
         "date_asc": "submission_date",
@@ -46,6 +51,7 @@ def submission_list(request):
             "search_query": query,
             "selected_status": status,
             "selected_order": ordering,
+            "filter_form": filter_form,
         },
     )
 
@@ -60,3 +66,48 @@ def submission_detail(request, submission_id):
         "submissions/submission_detail.html",
         {"submission": submission},
     )
+
+
+def submission_create(request):
+    form = SubmissionForm(request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        submission = form.save()
+        messages.success(request, "Сдача задания создана.")
+        return redirect("submissions:detail", submission_id=submission.pk)
+    return render(
+        request,
+        "submissions/submission_form.html",
+        {"form": form, "title": "Новая сдача", "submit_label": "Создать сдачу"},
+    )
+
+
+def submission_update(request, submission_id):
+    submission = get_object_or_404(Submission, pk=submission_id)
+    form = SubmissionForm(
+        request.POST if request.method == "POST" else None,
+        instance=submission,
+    )
+    if request.method == "POST" and form.is_valid():
+        submission = form.save()
+        messages.success(request, "Сдача задания обновлена.")
+        return redirect("submissions:detail", submission_id=submission.pk)
+    return render(
+        request,
+        "submissions/submission_form.html",
+        {
+            "form": form,
+            "submission": submission,
+            "title": f"Изменить сдачу №{submission.pk}",
+            "submit_label": "Сохранить изменения",
+        },
+    )
+
+
+@require_POST
+def submission_cancel(request, submission_id):
+    submission = get_object_or_404(Submission, pk=submission_id)
+    if not submission.is_cancelled:
+        submission.is_cancelled = True
+        submission.save(update_fields=["is_cancelled"])
+        messages.success(request, "Сдача отменена.")
+    return redirect("submissions:detail", submission_id=submission.pk)
