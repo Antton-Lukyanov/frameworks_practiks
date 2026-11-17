@@ -8,15 +8,45 @@
             <p class="eyebrow">Участники</p>
             <h1>Студенты</h1>
         </div>
-        <span class="count-pill">{{ students|length }} всего</span>
+        <span class="count-pill">{{ page_obj.paginator.count }} всего</span>
     </div>
+    <form method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-md-5">
+            <label for="student-search" class="form-label">Поиск</label>
+            <input id="student-search" class="form-control" type="search"
+                   name="q" value="{{ search_query }}"
+                   placeholder="Имя или группа">
+        </div>
+        <div class="col-md-3">
+            <label for="student-group" class="form-label">Группа</label>
+            <select id="student-group" class="form-select" name="group">
+                <option value="">Все группы</option>
+                {% for group in groups %}
+                    <option value="{{ group }}"{% if group == selected_group %} selected{% endif %}>{{ group }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="student-order" class="form-label">Сортировка</label>
+            <select id="student-order" class="form-select" name="order">
+                <option value="name"{% if selected_order == "name" %} selected{% endif %}>По имени</option>
+                <option value="name_desc"{% if selected_order == "name_desc" %} selected{% endif %}>Имя: Я–А</option>
+                <option value="group"{% if selected_order == "group" %} selected{% endif %}>По группе</option>
+                <option value="submissions"{% if selected_order == "submissions" %} selected{% endif %}>По числу сдач</option>
+                <option value="score"{% if selected_order == "score" %} selected{% endif %}>По среднему баллу</option>
+            </select>
+        </div>
+        <div class="col-md-2 d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Применить</button>
+            <a class="btn btn-outline-secondary" href="{% url 'students:list' %}">Сбросить</a>
+        </div>
+    </form>
     <div class="row g-3">
         {% for student in students %}
             {% include "students/includes/student_card.html" %}
         {% empty %}
-            <div class="col-12">
-                <p class="empty-state">Студентов пока нет.</p>
-            </div>
+            <div class="col-12"><p class="empty-state">Студенты не найдены.</p></div>
         {% endfor %}
     </div>
+    {% include "includes/pagination.html" %}
 {% endblock %}

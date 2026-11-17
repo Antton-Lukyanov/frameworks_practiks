@@ -52,8 +52,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "task_service.wsgi.application"
 ASGI_APPLICATION = "task_service.asgi.application"
 
-# Django СЃРѕС…СЂР°РЅСЏРµС‚ СЃС‚Р°РЅРґР°СЂС‚РЅСѓСЋ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ Р‘Р” РґР»СЏ Р°РґРјРёРЅРєРё Рё СЃР»РµРґСѓСЋС‰РёС… СЌС‚Р°РїРѕРІ.
-# РџСЂРµРґРјРµС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ РїРѕ-РїСЂРµР¶РЅРµРјСѓ С‡РёС‚Р°СЋС‚СЃСЏ РёР· JSON, ORM-РјРѕРґРµР»Рё РЅРµ РёСЃРїРѕР»СЊР·СѓСЋС‚СЃСЏ.
+# Django and the project's models use this SQLite database.
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",

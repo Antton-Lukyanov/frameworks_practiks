@@ -1,49 +1,62 @@
-"""Submission list and detail pages backed by SQLite joins."""
+"""Submission pages implemented with Django ORM querysets."""
 
-from django.shortcuts import render
+from django.db.models import Q
+from django.shortcuts import get_object_or_404, render
 
-from db.queries import fetch_submission, fetch_submissions
-from models.students import Student
-from models.submissions import Submission
-from models.tasks import Task
-
-
-def _to_submission(row):
-    student = Student(row["student_id"], row["student_name"], row["student_group"])
-    task = Task(
-        row["task_id"],
-        row["task_title"],
-        row["max_score"],
-        row["deadline"],
-    )
-    submission = Submission(
-        row["id"],
-        student,
-        task,
-        row["file_name"],
-        row["file_size_mb"],
-        row["score"],
-        row["submission_date"],
-    )
-    submission.is_cancelled = bool(row["is_cancelled"])
-    return submission
+from submissions.models import Submission
+from web_utils import paginate_queryset
 
 
 def submission_list(request):
-    submissions = [_to_submission(row) for row in fetch_submissions()]
+    query = request.GET.get("q", "").strip()
+    status = request.GET.get("status", "")
+    ordering = request.GET.get("order", "date")
+    orderings = {
+        "date": "-submission_date",
+        "date_asc": "submission_date",
+        "score": "-score",
+        "score_asc": "score",
+        "student": "student__name",
+        "task": "task__title",
+    }
+
+    submissions = Submission.objects.select_related("student", "task")
+    if query:
+        submissions = submissions.filter(
+            Q(file_name__icontains=query)
+            | Q(student__name__icontains=query)
+            | Q(task__title__icontains=query)
+        )
+    if status == "active":
+        submissions = submissions.filter(is_cancelled=False)
+    elif status == "cancelled":
+        submissions = submissions.filter(is_cancelled=True)
+
+    submissions = submissions.order_by(
+        orderings.get(ordering, "-submission_date"), "-id"
+    )
+    page_obj, query_params = paginate_queryset(request, submissions)
     return render(
         request,
         "submissions/submission_list.html",
-        {"submissions": submissions},
+        {
+            "submissions": page_obj.object_list,
+            "page_obj": page_obj,
+            "query_params": query_params,
+            "search_query": query,
+            "selected_status": status,
+            "selected_order": ordering,
+        },
     )
 
 
 def submission_detail(request, submission_id):
-    row = fetch_submission(submission_id)
-    submission = _to_submission(row) if row is not None else None
+    submission = get_object_or_404(
+        Submission.objects.select_related("student", "task"),
+        pk=submission_id,
+    )
     return render(
         request,
         "submissions/submission_detail.html",
         {"submission": submission},
-        status=404 if submission is None else 200,
     )

@@ -1,14 +1,37 @@
-﻿"""РџСЂРµРґСЃС‚Р°РІР»РµРЅРёСЏ РіР»Р°РІРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё РѕР±С‰РµР№ РѕС€РёР±РєРё 404."""
+"""Homepage and shared error page for the assignment service."""
 
+from django.db.models import Avg, Count, Max, Min, Sum
 from django.shortcuts import render
+
+from students.models import Student
+from submissions.models import Submission
+from tasks.models import Task
 
 
 def index(request):
-    """РџРѕРєР°Р·Р°С‚СЊ РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РїСЂРѕРµРєС‚Р°."""
-    return render(request, "homepage/index.html")
+    active_submissions = Submission.objects.filter(is_cancelled=False)
+    scored_submissions = active_submissions.exclude(score=0)
+    statistics = active_submissions.aggregate(
+        total=Count("id"),
+        total_score=Sum("score"),
+    )
+    statistics.update(
+        scored_submissions.aggregate(
+            average_score=Avg("score"),
+            minimum_score=Min("score"),
+            maximum_score=Max("score"),
+        )
+    )
+    return render(
+        request,
+        "homepage/index.html",
+        {
+            "student_count": Student.objects.count(),
+            "task_count": Task.objects.count(),
+            "statistics": statistics,
+        },
+    )
 
 
 def page_not_found(request, exception):
-    """РџРѕРєР°Р·Р°С‚СЊ РѕР±С‰СѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РѕС€РёР±РєРё 404."""
     return render(request, "404.html", status=404)
-

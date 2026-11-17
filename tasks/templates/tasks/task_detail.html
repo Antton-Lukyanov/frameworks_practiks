@@ -1,29 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}
-    {% if task %}{{ task.title }}{% else %}Задание не найдено{% endif %}
-    · Сервис заданий
-{% endblock %}
+{% block title %}{{ task.title }} · Сервис заданий{% endblock %}
 
 {% block content %}
-    {% if task %}
-        <article class="card entity-detail">
-            <div class="card-body">
-                <p class="eyebrow">Задание №{{ task.id }}</p>
-                <h1>{{ task.title|default:"Без названия" }}</h1>
-                <p><strong>Максимальный балл:</strong>
-                    {{ task.max_score }}</p>
-                <p><strong>Дедлайн:</strong>
-                    {{ task.deadline|default:"Не указан" }}</p>
-            </div>
-        </article>
-    {% else %}
-        <section class="empty-state">
-            <p class="eyebrow">Ошибка 404</p>
-            <h1>Задание не найдено</h1>
-            <p>Задания с таким идентификатором нет в списке.</p>
-        </section>
-    {% endif %}
-    <a class="btn btn-outline-secondary mt-3"
-       href="{% url 'tasks:list' %}">← К списку заданий</a>
+    <article class="card entity-detail">
+        <div class="card-body">
+            <p class="eyebrow">Задание №{{ task.id }}</p>
+            <h1>{{ task.title }}</h1>
+            <p><strong>Максимальный балл:</strong> {{ task.max_score }}</p>
+            <p><strong>Дедлайн:</strong> {{ task.deadline|date:"d.m.Y" }}</p>
+        </div>
+    </article>
+    <h2 class="h4 mt-4">Сдачи задания</h2>
+    <div class="row g-3">
+        {% for submission in submissions %}
+            {% include "submissions/includes/submission_card.html" %}
+        {% empty %}
+            <div class="col-12"><p class="empty-state">Сдач пока нет.</p></div>
+        {% endfor %}
+    </div>
+    <a class="btn btn-outline-secondary mt-3" href="{% url 'tasks:list' %}">← К списку заданий</a>
 {% endblock %}
